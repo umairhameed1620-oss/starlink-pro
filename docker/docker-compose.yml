@@ -1,0 +1,87 @@
+version: '3.9'
+
+services:
+  # ─── PostgreSQL ─────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: starlink_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       starlinkpro
+      POSTGRES_USER:     postgres
+      POSTGRES_PASSWORD: StarLink@2026
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── Backend API ─────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: starlink_api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV:              production
+      PORT:                  5000
+      DB_HOST:               postgres
+      DB_PORT:               5432
+      DB_NAME:               starlinkpro
+      DB_USER:               postgres
+      DB_PASSWORD:           StarLink@2026
+      JWT_SECRET:            ${JWT_SECRET:-starlink-prod-secret-change-me}
+      JWT_REFRESH_SECRET:    ${JWT_REFRESH_SECRET:-starlink-refresh-prod-change-me}
+      FRONTEND_URL:          ${FRONTEND_URL:-http://localhost}
+      CELESTRAK_URL:         https://celestrak.org/NORAD/elements/gp.php
+      CELESTRAK_GROUP:       starlink
+      TLE_REFRESH_INTERVAL_MS: 7200000
+      RATE_LIMIT_MAX:        200
+      LOG_LEVEL:             info
+    volumes:
+      - backend_logs:/app/logs
+      - backend_data:/app/data
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ─── Nginx Reverse Proxy + Static Frontend ──────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: starlink_nginx
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - frontend_dist:/usr/share/nginx/html:ro
+      - nginx_logs:/var/log/nginx
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  postgres_data:
+  backend_logs:
+  backend_data:
+  frontend_dist:
+  nginx_logs:
