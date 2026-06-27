@@ -37,3 +37,27 @@
 {"level":"info","message":"::1 - - [26/Jun/2026:20:42:02 +0000] \"POST /api/auth/login HTTP/1.1\" 401 31 \"-\" \"curl/8.7.1\"","timestamp":"2026-06-26 21:42:02"}
 {"level":"info","message":"Login: admin@starlinkpro.local (admin) from ::1","timestamp":"2026-06-26 21:43:31"}
 {"level":"info","message":"::1 - - [26/Jun/2026:20:43:31 +0000] \"POST /api/auth/login HTTP/1.1\" 200 447 \"-\" \"curl/8.7.1\"","timestamp":"2026-06-26 21:43:31"}
+{"level":"info","message":"Initialising database...","timestamp":"2026-06-26 21:46:33"}
+{"level":"info","message":"PostgreSQL connected","timestamp":"2026-06-26 21:46:33"}
+{"level":"info","message":"Fetching initial TLE data...","timestamp":"2026-06-26 21:46:33"}
+{"level":"info","message":"Fetching TLE data from CelesTrak...","timestamp":"2026-06-26 21:46:33"}
+{"level":"error","message":"TLE refresh failed:","timestamp":"2026-06-26 21:46:34"}
+{"level":"warn","message":"CelesTrak unavailable — using DB cache fallback","timestamp":"2026-06-26 21:46:34"}
+{"level":"warn","message":"Initial TLE fetch failed:","timestamp":"2026-06-26 21:46:34"}
+{"level":"info","message":"Initialising database...","timestamp":"2026-06-26 21:47:48"}
+{"level":"info","message":"PostgreSQL connected","timestamp":"2026-06-26 21:47:48"}
+{"level":"info","message":"Fetching initial TLE data...","timestamp":"2026-06-26 21:47:48"}
+{"level":"info","message":"Fetching TLE data from CelesTrak...","timestamp":"2026-06-26 21:47:48"}
+{"level":"error","message":"TLE refresh failed:","timestamp":"2026-06-26 21:47:50"}
+{"level":"warn","message":"CelesTrak unavailable — using DB cache fallback","timestamp":"2026-06-26 21:47:50"}
+{"level":"warn","message":"Initial TLE fetch failed:","timestamp":"2026-06-26 21:47:50"}
+{"level":"info","message":"TLE refresh cron scheduled (every 2 hours)","timestamp":"2026-06-26 21:47:50"}
+{"level":"info","message":"Telemetry loop started (10s interval, batch size: 100)","timestamp":"2026-06-26 21:47:50"}
+{"level":"info","message":"Monitoring started (1-minute health checks)","timestamp":"2026-06-26 21:47:50"}
+{"level":"info","message":"🚀 Starlink Pro server running on port 5001","timestamp":"2026-06-26 21:47:50"}
+{"level":"info","message":"📡 GraphQL: http://localhost:5001/graphql","timestamp":"2026-06-26 21:47:50"}
+{"level":"info","message":"❤️  Health:  http://localhost:5001/api/health","timestamp":"2026-06-26 21:47:50"}
+{"level":"info","message":"🔌 WS:      ws://localhost:5001","timestamp":"2026-06-26 21:47:50"}
+{"level":"info","message":"::1 - - [26/Jun/2026:20:58:19 +0000] \"GET /api/health HTTP/1.1\" 200 368 \"-\" \"curl/8.7.1\"","timestamp":"2026-06-26 21:58:19"}
+{"level":"info","message":"Cron: starting TLE refresh","timestamp":"2026-06-26 22:00:00"}
+{"level":"info","message":"Fetching TLE data from CelesTrak...","timestamp":"2026-06-26 22:00:00"}
